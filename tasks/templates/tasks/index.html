@@ -1,0 +1,47 @@
+{% extends 'tasks/layout.html' %}
+
+{% block body %}
+<div id="todo_list">
+    <div id="edge"> </div>
+    <span class="title">{{list_title}}</span>
+    <form action="{% url 'tasks:index' %}" method="post" id="toggle_form">
+        {% csrf_token %}
+        <input type="hidden" name="task_id" value="0" id="toggle_form_val">
+        <input type="hidden" name="delete" value=false id="toggle_form_delete">
+    </form>
+    <div class="item_list">
+            {% for task in tasks %}
+            <div class="todo_item">
+                    {% if task.completed %}
+                    <button type=button onClick="toggle_checkbox('{{task.id}}')" class="checkbox">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </button>
+                    <span style="opacity: 0.5;"><del>{{ task.text }}</del></span>
+                {% else %}
+                    <button type=button onClick="toggle_checkbox('{{task.id}}')" class="checkbox">
+                        <i class="fa-regular fa-circle"></i>
+                    </button>
+                    {{ task.text }}
+                {% endif %}
+            </div>
+            {% endfor %}
+    </div>
+    <form action="{% url 'tasks:index' %}" method="post" id="add_task_form">
+        {% csrf_token %}
+        <input type="text" placeholder="New Task" name="new_task" id="add_task_input" autofocus>
+        <input type="hidden" name="should_edit" value=true id="form_identifier">
+        <button type="button" onClick="submit_actions()" class="action_button"><i class="fa-solid fa-circle-plus"></i></button>
+        <a href="/tasks/edit/" class="action_button edit_button"><i class="fa-solid fa-pen"></i></a>
+    </form>
+    <script>
+        function toggle_checkbox(id){
+            document.getElementById("toggle_form_val").value = id;
+            document.getElementById("toggle_form_delete").value = false;
+            document.getElementById("toggle_form").submit();
+        }
+        function submit_actions(){
+            document.getElementById("add_task_form").submit();
+        }
+    </script>
+</div>
+{% endblock %}

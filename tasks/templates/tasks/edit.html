@@ -1,0 +1,57 @@
+{% extends 'tasks/layout.html' %}
+
+{% block body %}
+<div id="todo_list">
+    <div id="edge"> </div>
+
+    <form action="{% url 'tasks:edit' %}" method="post" id="edit_form">
+    {% csrf_token %}
+    <input name="list_title" value="{{list_title}}" class="edit_title title hover">
+    <div class="item_list">
+        {% for task in tasks %}
+        <div class="todo_item hover">
+            <input name="{{task.id}}" value="{{task.text}}" class="edit_task_text">
+            <button type=button onClick="delete_item('{{task.id}}',true)" class="action_button delete_button">
+                <i class="fa-solid fa-trash-can"></i>
+            </button>
+        </div>
+        {% endfor %}
+        <input type="submit" class="hidden" value="">
+    </div>
+    </form>
+    <div id="end_edit_form">
+        <button type="button" onClick="delete_completed()" class="save_button"><i class="fa-solid fa-trash-can"></i>  Delete completed</button>
+        <form action="{% url 'tasks:edit' %}" method="post" id="color_form">
+            {% csrf_token %}
+            <input name="color_id" type="hidden" id="color_form_val">
+            {% for color in colors %}
+                <button style="color:{{color.primary_light_mid}};" class="color_button" onClick="change_color({{color.id}})">{% if active_color.id == color.id %}<i class="fa-solid fa-circle-check"></i>{% else %} <i class="fa-solid fa-circle"></i> {% endif %}</button>
+            {% endfor %}
+        </form>
+        <a href="/tasks/" class="action_button edit_button"><i class="fa-solid fa-reply"></i></a>
+    </div>
+
+    <form action="{% url 'tasks:edit' %}" method="post" id="delete_form">
+        {% csrf_token %}
+        <input type="hidden" name="task_id" id="delete_form_val">
+    </form>
+    <form action="{% url 'tasks:edit' %}" method="post" id="delete_completed_form">
+        {% csrf_token %}
+        <input type="hidden" name="delete_completed" value=true>
+    </form>
+
+    <script>
+       function delete_item(id){
+            document.getElementById("delete_form_val").value = id;
+            document.getElementById("delete_form").submit();
+       }
+       function delete_completed(){
+           document.getElementById("delete_completed_form").submit();
+       }
+       function change_color(color){
+            document.getElementById("color_form_val").value = color;
+            document.getElementById("color_form").submit();
+       }
+    </script>
+</div>
+{% endblock %}

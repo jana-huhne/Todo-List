@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>{{title}}</title>
+    <meta charset="UTF-8">
+    <script src="https://kit.fontawesome.com/17e8cc92bf.js" crossorigin="anonymous"></script>
+
+<body>
+    {% block body %}
+    {% endblock %}
+    <style>
+        html {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            /* --primary_color: #6ac588;
+            --primary_color_mid: #60b97b;
+            --primary_color_dark: #63bd81;
+            --primary_color_light: #e4f3e0;
+            --primary_color_light_mid: #b9e9b7;
+            --text_color: rgb(37, 28, 68); */
+            --primary_color: {{active_color.primary}};
+            --primary_color_mid: {{active_color.primary_mid}};
+            --primary_color_dark: {{active_color.primary_dark}};
+            --primary_color_light: {{active_color.primary_light}};
+            --primary_color_light_mid: {{active_color.primary_light_mid}};
+            --text_color: rgb(37, 28, 68);
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #todo_list {
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, 0);
+            width: 500px;
+            top: 20px;
+            /* height: fit-content; */
+            background-color: var(--primary_color_light);
+            color: var(--primary_color_dark);
+            padding: 30px;
+            /* -webkit-clip-path: polygon(0 0, 0 100%, 100% 100%, 100% 25%, 75% 0); */
+            clip-path: polygon(0 0, 0 100%, 100% 100%, 100% 100px, 460px 0);
+        }
+
+        #edge {
+            background-color: var(--primary_color_light_mid);
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        .item_list {
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+            color: var(--text_color);
+        }
+
+        #add_task_form {
+            padding-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .checkbox {
+            background-color: transparent;
+            border: none;
+            color: var(--primary_color);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .checkbox:hover {
+            color: var(--primary_color_mid);
+        }
+
+        .checkbox:active {
+            color: var(--primary_color_dark);
+        }
+
+        .action_button {
+            background-color: transparent;
+            border: none;
+            color: var(--primary_color);
+            font-size: 35px;
+            cursor: pointer;
+        }
+
+        .action_button:hover {
+            color: var(--primary_color_mid);
+        }
+
+        .action_button:active {
+            color: var(--primary_color_dark);
+        }
+
+        .edit_button {
+            background-color: white;
+            clip-path: circle();
+            padding: 8px;
+            border: none;
+            color: var(--primary_color);
+            font-size: 20px;
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+        .edit_button:hover {
+            background-color: rgb(248, 248, 248);
+        }
+
+        .edit_button:active {
+            background-color: rgb(240, 240, 240);
+        }
+
+        .delete_button {
+            font-size: 20px;
+            color: rgb(180, 84, 129);
+            margin-left: auto;
+        }
+
+        .delete_button:hover {
+            color: rgb(161, 67, 111);
+        }
+
+        .delete_button:active {
+            color: rgb(145, 42, 90);
+        }
+
+        .todo_item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid white;
+            gap: 10px;
+        }
+
+        #add_task_input {
+            /* border: 2px solid rgb(170, 98, 236); */
+            border: none;
+            padding-left: 15px;
+            padding-right: 15px;
+            width: 75%;
+            background-color: var(--primary_color_light_mid);
+            color: var(--text_color);
+            border-radius: 20px;
+        }
+
+        #add_task_input:focus {
+            outline: none;
+        }
+
+        .edit_task_text {
+            font-size: 14px;
+            border: none;
+            padding-left: 15px;
+            padding-right: 15px;
+            width: 100%;
+            background-color: transparent;
+            color: var(--text_color);
+        }
+
+        .edit_task_text:focus {
+            outline: none;
+        }
+
+        .edit_title {
+            border: none;
+            background-color: transparent;
+            height: 50px;
+            padding: 0px
+        }
+
+        .edit_title:focus {
+            outline: none;
+        }
+
+        .title {
+            font-size: 50px;
+            font-weight: bold;
+            color: var(--primary_color_dark);
+            padding: 10px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+
+        .hover:hover {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.342);
+        }
+
+        .hover:focus {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.342);
+        }
+
+
+        ::placeholder {
+            color: var(--text_color);
+            opacity: 0.4;
+        }
+
+        #end_edit_form {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            padding: 10px;
+            gap: 10px;
+            padding-top: 30px;
+            padding-bottom: 0px;
+        }
+
+        .save_button {
+            background-color: white;
+            border: none;
+            border-radius: 30px;
+            color: var(--primary_color);
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .save_button:hover {
+            background-color: rgb(251, 245, 255);
+        }
+
+        .save_button:active {
+            background-color: rgb(246, 239, 255);
+        }
+
+        .hidden {
+            height: 0px;
+            width: 0px;
+            color: transparent;
+            background-color: transparent;
+            border: none;
+        }
+
+        .color_button {
+            background-color: white;
+            clip-path: circle();
+            border: none;
+            font-size: 26px;
+            padding:6px;
+            cursor: pointer;
+        }
+    </style>
+</body>
+
+</html>
